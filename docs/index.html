@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V# Documentation</title>
+    <style>
+        :root {
+            --primary-color: #6747c7;
+            --secondary-color: #2c3e50;
+            --accent-color: #ff4757;
+            --text-color: #333;
+            --light-bg: #f5f7fa;
+            --code-bg: #282c34;
+            --code-color: #abb2bf;
+            --border-color: #ddd;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background-color: var(--secondary-color);
+            padding: 0.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+        }
+        
+        nav ul li {
+            margin: 0 1rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .sidebar {
+            width: 250px;
+            padding-right: 2rem;
+        }
+        
+        .sidebar ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar ul li a:hover {
+            background-color: var(--light-bg);
+        }
+        
+        .sidebar h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        main {
+            flex: 1;
+        }
+        
+        .content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        h1, h2, h3, h4 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.9rem;
+        }
+        
+        .method {
+            background-color: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .method h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .parameters {
+            margin: 1rem 0;
+        }
+        
+        .parameter {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .parameter-name {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .returns {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .module-intro {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            background-color: var(--secondary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">V#</div>
+        <p>A JavaScript utility project</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#console">Console</a></li>
+            <li><a href="#fetch">Fetch</a></li>
+            <li><a href="#json">JSON</a></li>
+            <li><a href="#examples">Examples</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Getting Started</h3>
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#project-structure">Project Structure</a></li>
+                <li><a href="#quick-start">Quick Start</a></li>
+            </ul>
+            
+            <h3>Modules</h3>
+            <ul>
+                <li><a href="#console">Console Module</a></li>
+                <li><a href="#fetch">Fetch Module</a></li>
+                <li><a href="#json">JSON Module</a></li>
+            </ul>
+            
+            <h3>Examples</h3>
+            <ul>
+                <li><a href="#console-example">Console Examples</a></li>
+                <li><a href="#fetch-example">Fetch Examples</a></li>
+                <li><a href="#json-example">JSON Examples</a></li>
+            </ul>
+            
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#api-reference">API Reference</a></li>
+                <li><a href="#contribute">How to Contribute</a></li>
+            </ul>
+        </aside>
+        
+        <main>
+            <div class="content">
+                <section id="introduction">
+                    <h1>V# Documentation</h1>
+                    <div class="module-intro">
+                        <p>V# is a JavaScript utility project that provides enhanced functionality for console logging, HTTP requests, and JSON handling. It's designed to make common web development tasks more efficient and less error-prone.</p>
+                        <p>V# offers a clean API with consistent error handling, informative logging, and simplified HTTP operations.</p>
+                    </div>
+                </section>
+                
+                <section id="project-structure">
+                    <h2>Project Structure</h2>
+                    <p>V# is organized into modular JavaScript files:</p>
+                    <pre><code>assets/
+  └── functions/
+      ├── console.js    # Enhanced console logging
+      ├── fetch.js      # HTTP request utilities
+      └── json.js       # JSON handling utilities</code></pre>
+                </section>
+                
+                <section id="quick-start">
+                    <h2>Quick Start</h2>
+                    <p>To use V# in your project, simply import the modules you need:</p>
+                    <pre><code>// ES Modules
+import { print } from './assets/functions/console.js';
+import { fetch } from './assets/functions/fetch.js';
+import { json } from './assets/functions/json.js';
+
+// CommonJS
+const { print } = require('./assets/functions/console.js');
+const { fetch } = require('./assets/functions/fetch.js');
+const { json } = require('./assets/functions/json.js');</code></pre>
+                </section>
+                
+                <section id="console">
+                    <h2>Console Module</h2>
+                    <div class="module-intro">
+                        <p>The Console module (exported as <code>print</code>) enhances JavaScript's native console functionality by adding prefixes to different log types and providing access to all console methods through a unified interface.</p>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>print.log(message)</h3>
+                        <p>Logs a message to the console.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">message:</span> Any - The message to log
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> void
+                        </div>
+                        <pre><code>print.log("I love V#");
+// Prints to console: "I love V#"</code></pre>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>print.debug(message)</h3>
+                        <p>Logs a debug message with a "[DEBUG]" prefix.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">message:</span> Any - The debug message to log
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> void
+                        </div>
+                        <pre><code>print.debug("V# is developed by lunary-net in JavaScript");
+// Prints to console: "[DEBUG] V# is developed by lunary-net in JavaScript"</code></pre>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>print.error(message)</h3>
+                        <p>Logs an error message with an "[ERROR]" prefix.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">message:</span> Any - The error message to log
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> void
+                        </div>
+                        <pre><code>print.error("Error 404. Not Found");
+// Prints to console: "[ERROR] Error 404. Not Found"</code></pre>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>print.info(message)</h3>
+                        <p>Logs an informational message with an "[INFO]" prefix.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">message:</span> Any - The info message to log
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> void
+                        </div>
+                        <pre><code>print.info("Logged in as lunary-net");
+// Prints to console: "[INFO] Logged in as lunary-net"</code></pre>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>print.warn(message)</h3>
+                        <p>Logs a warning message with a "[WARNING]" prefix.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">message:</span> Any - The warning message to log
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> void
+                        </div>
+                        <pre><code>print.warn("This feature will be deprecated soon");
+// Prints to console: "[WARNING] This feature will be deprecated soon"</code></pre>
+                    </div>
+                    
+                    <p>The console module also includes all other native console methods:</p>
+                    <ul>
+                        <li><code>print.trace()</code> - Outputs a stack trace</li>
+                        <li><code>print.dir(obj)</code> - Displays an interactive list of object properties</li>
+                        <li><code>print.table(data)</code> - Displays tabular data as a table</li>
+                        <li><code>print.count(label)</code> - Counts number of times a label is logged</li>
+                        <li><code>print.time(label)</code>, <code>print.timeEnd(label)</code> - Timing operations</li>
+                        <li><code>print.group()</code>, <code>print.groupEnd()</code> - Creates grouped log messages</li>
+                        <li>And more...</li>
+                    </ul>
+                </section>
+                
+                <section id="fetch">
+                    <h2>Fetch Module</h2>
+                    <div class="module-intro">
+                        <p>The Fetch module provides enhanced HTTP request functionality with built-in error handling, automatic JSON parsing, and specialized methods for different HTTP verbs.</p>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>fetch.get(url, options)</h3>
+                        <p>Performs a GET request and automatically parses the JSON response.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">url:</span> String - The URL to request
+                            </div>
+                            <div class="parameter">
+                                <span class="parameter-name">options:</span> Object (optional) - Fetch options
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> Promise&lt;any&gt; - Parsed JSON response
+                        </div>
+                        <pre><code>// Basic GET request
+const data = await fetch.get('https://api.example.com/users');
+
+// With custom headers
+const userData = await fetch.get('https://api.example.com/user/1', {
+  headers: { 'Authorization': 'Bearer token123' }
+});</code></pre>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>fetch.post(url, data, options)</h3>
+                        <p>Performs a POST request with JSON body and automatically parses the JSON response.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">url:</span> String - The URL to request
+                            </div>
+                            <div class="parameter">
+                                <span class="parameter-name">data:</span> Object - The data to send in request body
+                            </div>
+                            <div class="parameter">
+                                <span class="parameter-name">options:</span> Object (optional) - Fetch options
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> Promise&lt;any&gt; - Parsed JSON response
+                        </div>
+                        <pre><code>// Create a new user
+const newUser = await fetch.post('https://api.example.com/users', {
+  name: 'John Doe',
+  email: 'john@example.com'
+});</code></pre>
+                    </div>
+                    
+                    <p>The fetch module also includes similar methods for other HTTP methods:</p>
+                    <ul>
+                        <li><code>fetch.put(url, data, options)</code> - For PUT requests</li>
+                        <li><code>fetch.delete(url, options)</code> - For DELETE requests</li>
+                        <li><code>fetch.patch(url, data, options)</code> - For PATCH requests</li>
+                    </ul>
+                    
+                    <div class="method">
+                        <h3>fetch.getText(url, options)</h3>
+                        <p>Performs a GET request and returns the text response instead of parsing as JSON.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">url:</span> String - The URL to request
+                            </div>
+                            <div class="parameter">
+                                <span class="parameter-name">options:</span> Object (optional) - Fetch options
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> Promise&lt;string&gt; - Text response
+                        </div>
+                        <pre><code>// Get HTML content
+const htmlContent = await fetch.getText('https://example.com');</code></pre>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>fetch.getBlob(url, options)</h3>
+                        <p>Performs a GET request and returns the response as a blob (for files, images, etc.).</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">url:</span> String - The URL to request
+                            </div>
+                            <div class="parameter">
+                                <span class="parameter-name">options:</span> Object (optional) - Fetch options
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> Promise&lt;Blob&gt; - Blob response
+                        </div>
+                        <pre><code>// Download an image
+const imageBlob = await fetch.getBlob('https://example.com/logo.png');
+const imageUrl = URL.createObjectURL(imageBlob);
+document.getElementById('myImage').src = imageUrl;</code></pre>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>fetch.uploadFile(url, fileData, fileName, options)</h3>
+                        <p>Uploads a file using FormData.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">url:</span> String - The URL to upload to
+                            </div>
+                            <div class="parameter">
+                                <span class="parameter-name">fileData:</span> File|Blob - The file data to upload
+                            </div>
+                            <div class="parameter">
+                                <span class="parameter-name">fileName:</span> String (optional) - The name to use for the file field (default: 'file')
+                            </div>
+                            <div class="parameter">
+                                <span class="parameter-name">options:</span> Object (optional) - Fetch options
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> Promise&lt;any&gt; - Parsed JSON response
+                        </div>
+                        <pre><code>// Upload a file from an input element
+const fileInput = document.getElementById('fileInput');
+const file = fileInput.files[0];
+const result = await fetch.uploadFile('https://api.example.com/upload', file);</code></pre>
+                    </div>
+                </section>
+                
+                <section id="json">
+                    <h2>JSON Module</h2>
+                    <div class="module-intro">
+                        <p>The JSON module provides a convenient wrapper around JavaScript's native JSON functionality.</p>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>json.stringify(value)</h3>
+                        <p>Converts a JavaScript value to a JSON string.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">value:</span> Any - The value to convert to JSON
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> String - JSON string representation
+                        </div>
+                        <pre><code>const user = { name: 'John', age: 30 };
+const jsonString = json.stringify(user);
+// '{"name":"John","age":30}'</code></pre>
+                    </div>
+                    
+                    <div class="method">
+                        <h3>json.parse(text)</h3>
+                        <p>Parses a JSON string and returns the resulting JavaScript value.</p>
+                        <div class="parameters">
+                            <div class="parameter">
+                                <span class="parameter-name">text:</span> String - The JSON string to parse
+                            </div>
+                        </div>
+                        <div class="returns">
+                            <strong>Returns:</strong> Any - The parsed JavaScript value
+                        </div>
+                        <pre><code>const jsonString = '{"name":"John","age":30}';
+const user = json.parse(jsonString);
+// { name: 'John', age: 30 }</code></pre>
+                    </div>
+                </section>
+                
+                <section id="console-example">
+                    <h2>Console Module Examples</h2>
+                    <p>Here's a more comprehensive example of using the Console module:</p>
+                    <pre><code>const { print } = require('./assets/functions/console');
+
+// Basic logging with prefixes
+print.debug("V# is developed by lunary-net in JavaScript");
+print.error("Error 404. Not Found");
+print.info("Logged in as lunary-net");
+print.log("I love V#");
+print.warn("This feature will be deprecated soon");
+
+// Advanced logging
+const user = { name: "lunary-net", role: "admin", id: 12345 };
+print.dir(user);
+
+// Tabular data
+const users = [
+  { name: "lunary-net", role: "admin", id: 12345 },
+  { name: "user123", role: "member", id: 67890 }
+];
+print.table(users);
+
+// Grouping related logs
+print.group("User Authentication");
+print.log("Starting authentication process");
+print.log("Checking credentials...");
+print.log("Authentication successful");
+print.groupEnd();
+
+// Timing operations
+print.time("dataFetch");
+// ... some operation ...
+print.timeLog("dataFetch", "Data partially loaded");
+// ... more operations ...
+print.timeEnd("dataFetch");</code></pre>
+                </section>
+                
+                <section id="fetch-example">
+                    <h2>Fetch Module Examples</h2>
+                    <p>Here's a comprehensive example of using the Fetch module:</p>
+                    <pre><code>const { fetch } = require('./assets/functions/fetch');
+const { print } = require('./assets/functions/console');
+
+async function fetchExamples() {
+  try {
+    // GET request with JSON response
+    const users = await fetch.get('https://api.example.com/users');
+    print.info(`Retrieved ${users.length} users`);
+    
+    // POST request with JSON body
+    const newUser = await fetch.post('https://api.example.com/users', {
+      name: 'Jane Doe',
+      email: 'jane@example.com'
+    });
+    print.info(`Created new user with ID: ${newUser.id}`);
+    
+    // PUT request to update a resource
+    const updatedUser = await fetch.put(`https://api.example.com/users/${newUser.id}`, {
+      name: 'Jane Smith',
+      email: 'jane.smith@example.com'
+    });
+    print.info(`Updated user: ${updatedUser.name}`);
+    
+    // GET text content
+    const htmlContent = await fetch.getText('https://example.com');
+    print.info(`Retrieved ${htmlContent.length} bytes of HTML`);
+    
+    // GET a file as blob
+    const imageBlob = await fetch.getBlob('https://example.com/logo.png');
+    print.info(`Retrieved image of size: ${imageBlob.size} bytes`);
+    
+    // Upload a file (example with file from input)
+    // const fileInput = document.getElementById('fileInput');
+    // const file = fileInput.files[0];
+    // const uploadResult = await fetch.uploadFile('https://api.example.com/upload', file);
+    // print.info(`Uploaded file: ${uploadResult.filename}`);
+    
+    // DELETE a resource
+    await fetch.delete(`https://api.example.com/users/${newUser.id}`);
+    print.info(`Deleted user with ID: ${newUser.id}`);
+    
+  } catch (error) {
+    print.error(`API Error: ${error.message}`);
+  }
+}
+
+fetchExamples();</code></pre>
+                </section>
+                
+                <section id="json-example">
+                    <h2>JSON Module Examples</h2>
+                    <p>Here's an example of using the JSON module:</p>
+                    <pre><code>const { json } = require('./assets/functions/json');
+const { print } = require('./assets/functions/console');
+
+// Convert JavaScript object to JSON string
+const user = {
+  name: 'John Doe',
+  age: 30,
+  email: 'john@example.com',
+  roles: ['user', 'admin'],
+  metadata: {
+    lastLogin: new Date(),
+    preferences: {
+      theme: 'dark',
+      notifications: true
+    }
+  }
+};
+
+const jsonString = json.stringify(user);
+print.info('Converted object to JSON string:');
+print.log(jsonString);
+
+// Parse JSON string back to JavaScript object
+const parsedUser = json.parse(jsonString);
+print.info('Parsed back to JavaScript object:');
+print.dir(parsedUser);
+
+// Note: The Date object becomes a string when converted to JSON
+print.info(`Original date type: ${typeof user.metadata.lastLogin}`); // object
+print.info(`Parsed date type: ${typeof parsedUser.metadata.lastLogin}`); // string</code></pre>
+                </section>
+                
+                <section id="contribute">
+                    <h2>How to Contribute</h2>
+                    <p>Want to contribute to V#? Here's how you can help:</p>
+                    <ol>
+                        <li>Fork the repository</li>
+                        <li>Create a feature branch</li>
+                        <li>Make your changes</li>
+                        <li>Submit a pull request</li>
+                    </ol>
+                    <p>Areas where contributions are welcome:</p>
+                    <ul>
+                        <li>Adding new utility modules</li>
+                        <li>Improving error handling</li>
+                        <li>Adding tests</li>
+                        <li>Improving documentation</li>
+                    </ul>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 V# - Developed by lunary-net</p>
+        <p>A JavaScript utility project</p>
+    </footer>
+</body>
+</html>
